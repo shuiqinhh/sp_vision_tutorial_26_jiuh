@@ -1,0 +1,42 @@
+[
+{
+  "directory": "/home/rm/Desktop/sp_vision_tutorial_26_jiuh/build",
+  "command": "/usr/bin/g++ -DFMT_LOCALE -DFMT_SHARED -DOV_THREAD=OV_THREAD_TBB -D_GLIBCXX_USE_CXX11_ABI=1 -I/usr/include/eigen3 -I/home/rm/Desktop/sp_vision_tutorial_26_jiuh/lecture3/homework -I/home/rm/Desktop/sp_vision_tutorial_26_jiuh/lecture3/homework/tasks -I/home/rm/Desktop/sp_vision_tutorial_26_jiuh/lecture3/homework/io/hikrobot/include -isystem /usr/include/opencv4 -isystem /opt/intel/openvino_2024.6.0/runtime/include -g -Wno-error=deprecated-declarations -o CMakeFiles/main.dir/main.cpp.o -c /home/rm/Desktop/sp_vision_tutorial_26_jiuh/lecture3/homework/main.cpp",
+  "file": "/home/rm/Desktop/sp_vision_tutorial_26_jiuh/lecture3/homework/main.cpp"
+},
+{
+  "directory": "/home/rm/Desktop/sp_vision_tutorial_26_jiuh/build",
+  "command": "/usr/bin/g++ -D_GLIBCXX_USE_CXX11_ABI=1 -I/usr/include/eigen3 -I/home/rm/Desktop/sp_vision_tutorial_26_jiuh/lecture3/homework -I/home/rm/Desktop/sp_vision_tutorial_26_jiuh/lecture3/homework/tasks -I/home/rm/Desktop/sp_vision_tutorial_26_jiuh/lecture3/homework/io/hikrobot/include -isystem /usr/include/opencv4 -g -o CMakeFiles/example.dir/io/example.cpp.o -c /home/rm/Desktop/sp_vision_tutorial_26_jiuh/lecture3/homework/io/example.cpp",
+  "file": "/home/rm/Desktop/sp_vision_tutorial_26_jiuh/lecture3/homework/io/example.cpp"
+},
+{
+  "directory": "/home/rm/Desktop/sp_vision_tutorial_26_jiuh/build/io",
+  "command": "/usr/bin/g++ -D_GLIBCXX_USE_CXX11_ABI=1 -I/usr/include/eigen3 -I/usr/include/opencv4 -I/home/rm/Desktop/sp_vision_tutorial_26_jiuh/lecture3/homework -I/home/rm/Desktop/sp_vision_tutorial_26_jiuh/lecture3/homework/tasks -I/home/rm/Desktop/sp_vision_tutorial_26_jiuh/lecture3/homework/io/hikrobot/include -g -o CMakeFiles/io.dir/my_camera.cpp.o -c /home/rm/Desktop/sp_vision_tutorial_26_jiuh/lecture3/homework/io/my_camera.cpp",
+  "file": "/home/rm/Desktop/sp_vision_tutorial_26_jiuh/lecture3/homework/io/my_camera.cpp"
+},
+{
+  "directory": "/home/rm/Desktop/sp_vision_tutorial_26_jiuh/build/tasks",
+  "command": "/usr/bin/g++ -DOV_THREAD=OV_THREAD_TBB -D_GLIBCXX_USE_CXX11_ABI=1 -I/usr/include/eigen3 -I/usr/include/opencv4 -I/home/rm/Desktop/sp_vision_tutorial_26_jiuh/lecture3/homework -I/home/rm/Desktop/sp_vision_tutorial_26_jiuh/lecture3/homework/tasks -I/home/rm/Desktop/sp_vision_tutorial_26_jiuh/lecture3/homework/io/hikrobot/include -isystem /opt/intel/openvino_2024.6.0/runtime/include -g -Wno-error=deprecated-declarations -o CMakeFiles/auto_aim.dir/armor.cpp.o -c /home/rm/Desktop/sp_vision_tutorial_26_jiuh/lecture3/homework/tasks/armor.cpp",
+  "file": "/home/rm/Desktop/sp_vision_tutorial_26_jiuh/lecture3/homework/tasks/armor.cpp"
+},
+{
+  "directory": "/home/rm/Desktop/sp_vision_tutorial_26_jiuh/build/tasks",
+  "command": "/usr/bin/g++ -DOV_THREAD=OV_THREAD_TBB -D_GLIBCXX_USE_CXX11_ABI=1 -I/usr/include/eigen3 -I/usr/include/opencv4 -I/home/rm/Desktop/sp_vision_tutorial_26_jiuh/lecture3/homework -I/home/rm/Desktop/sp_vision_tutorial_26_jiuh/lecture3/homework/tasks -I/home/rm/Desktop/sp_vision_tutorial_26_jiuh/lecture3/homework/io/hikrobot/include -isystem /opt/intel/openvino_2024.6.0/runtime/include -g -Wno-error=deprecated-declarations -o CMakeFiles/auto_aim.dir/yolo.cpp.o -c /home/rm/Desktop/sp_vision_tutorial_26_jiuh/lecture3/homework/tasks/yolo.cpp",
+  "file": "/home/rm/Desktop/sp_vision_tutorial_26_jiuh/lecture3/homework/tasks/yolo.cpp"
+},
+{
+  "directory": "/home/rm/Desktop/sp_vision_tutorial_26_jiuh/build/tasks",
+  "command": "/usr/bin/g++ -DOV_THREAD=OV_THREAD_TBB -D_GLIBCXX_USE_CXX11_ABI=1 -I/usr/include/eigen3 -I/usr/include/opencv4 -I/home/rm/Desktop/sp_vision_tutorial_26_jiuh/lecture3/homework -I/home/rm/Desktop/sp_vision_tutorial_26_jiuh/lecture3/homework/tasks -I/home/rm/Desktop/sp_vision_tutorial_26_jiuh/lecture3/homework/io/hikrobot/include -isystem /opt/intel/openvino_2024.6.0/runtime/include -g -Wno-error=deprecated-declarations -o CMakeFiles/auto_aim.dir/yolos/yolov5.cpp.o -c /home/rm/Desktop/sp_vision_tutorial_26_jiuh/lecture3/homework/tasks/yolos/yolov5.cpp",
+  "file": "/home/rm/Desktop/sp_vision_tutorial_26_jiuh/lecture3/homework/tasks/yolos/yolov5.cpp"
+},
+{
+  "directory": "/home/rm/Desktop/sp_vision_tutorial_26_jiuh/build/tools",
+  "command": "/usr/bin/g++ -D_GLIBCXX_USE_CXX11_ABI=1 -I/usr/include/eigen3 -I/usr/include/opencv4 -I/home/rm/Desktop/sp_vision_tutorial_26_jiuh/lecture3/homework -I/home/rm/Desktop/sp_vision_tutorial_26_jiuh/lecture3/homework/tasks -g -o CMakeFiles/tools.dir/img_tools.cpp.o -c /home/rm/Desktop/sp_vision_tutorial_26_jiuh/lecture3/homework/tools/img_tools.cpp",
+  "file": "/home/rm/Desktop/sp_vision_tutorial_26_jiuh/lecture3/homework/tools/img_tools.cpp"
+},
+{
+  "directory": "/home/rm/Desktop/sp_vision_tutorial_26_jiuh/build/tools",
+  "command": "/usr/bin/g++ -D_GLIBCXX_USE_CXX11_ABI=1 -I/usr/include/eigen3 -I/usr/include/opencv4 -I/home/rm/Desktop/sp_vision_tutorial_26_jiuh/lecture3/homework -I/home/rm/Desktop/sp_vision_tutorial_26_jiuh/lecture3/homework/tasks -g -o CMakeFiles/tools.dir/logger.cpp.o -c /home/rm/Desktop/sp_vision_tutorial_26_jiuh/lecture3/homework/tools/logger.cpp",
+  "file": "/home/rm/Desktop/sp_vision_tutorial_26_jiuh/lecture3/homework/tools/logger.cpp"
+}
+]

@@ -1,0 +1,2 @@
+/usr/bin/ar qc libio.a CMakeFiles/io.dir/my_camera.cpp.o
+/usr/bin/ranlib libio.a
