@@ -2,13 +2,13 @@
 #include <spdlog/spdlog.h>
 #include <cstring>
 
-// 构造函数：复刻example.cpp的初始化流程
+// 构造函数
 myCamera::myCamera() {
     MV_CC_DEVICE_INFO_LIST stDeviceList;
     memset(&stDeviceList, 0, sizeof(MV_CC_DEVICE_INFO_LIST));
     int nRet = MV_CC_EnumDevices(MV_GIGE_DEVICE | MV_USB_DEVICE, &stDeviceList);
     if (nRet != MV_OK || stDeviceList.nDeviceNum == 0) {
-        spdlog::error("枚举设备失败（无设备或错误）");
+        spdlog::error("查询设备失败");
         return;
     }
     spdlog::info("发现{}台设备", stDeviceList.nDeviceNum);
@@ -22,7 +22,7 @@ myCamera::myCamera() {
 
     nRet = MV_CC_OpenDevice(hDev_);
     if (nRet != MV_OK) {
-        spdlog::error("打开设备失败");
+        spdlog::error("开启设备失败");
         MV_CC_DestroyHandle(hDev_);
         hDev_ = nullptr;
         return;
@@ -30,12 +30,12 @@ myCamera::myCamera() {
 
     nRet = MV_CC_SetEnumValue(hDev_, "TriggerMode", 0);
     if (nRet != MV_OK) {
-        spdlog::warn("设置连续模式失败（非致命）");
+        spdlog::warn("进入连续模式失败");
     }
 
     nRet = MV_CC_StartGrabbing(hDev_);
     if (nRet != MV_OK) {
-        spdlog::error("开始取流失败");
+        spdlog::error("取流失败");
         MV_CC_CloseDevice(hDev_);
         MV_CC_DestroyHandle(hDev_);
         hDev_ = nullptr;
@@ -44,16 +44,16 @@ myCamera::myCamera() {
 
     nRet = MV_CC_GetEnumValue(hDev_, "PixelFormat", &stEnumValue_);
     if (nRet == MV_OK) {
-        spdlog::info("像素格式获取成功");
+        spdlog::info("像素格式转换成功");
     } else {
-        spdlog::warn("获取像素格式失败（使用默认）");
+        spdlog::warn("像素格式转换失败");
     }
 
     bInit_ = true;
-    spdlog::info("相机初始化成功");
+    spdlog::info("初始化成功");
 }
 
-// 析构函数：复刻example.cpp的资源释放流程
+// 析构函数
 myCamera::~myCamera() {
     if (hDev_ != nullptr) {
         MV_CC_StopGrabbing(hDev_);
@@ -67,13 +67,13 @@ myCamera::~myCamera() {
         pData_ = nullptr;
     }
 
-    spdlog::info("相机关闭，资源释放完成");
+    spdlog::info("相机关闭成功");
 }
 
 // 读取图像函数：解决MvGvspPixelType类型不匹配问题
 bool myCamera::read(cv::Mat& image) {
     if (!bInit_ || hDev_ == nullptr) {
-        spdlog::error("相机未初始化，无法取图");
+        spdlog::error("相机未初始化");
         return false;
     }
 
@@ -81,13 +81,11 @@ bool myCamera::read(cv::Mat& image) {
     memset(&stFrameOut, 0, sizeof(MV_FRAME_OUT));
     int nRet = MV_CC_GetImageBuffer(hDev_, &stFrameOut, 1000);
     if (nRet != MV_OK) {
-        spdlog::warn("获取图像缓冲区失败（超时或错误）");
+        spdlog::warn("图像缓冲获取失败");
         return false;
     }
 
     stFrameInfo_ = stFrameOut.stFrameInfo;
-
-    // --- 新版SDK结构体转换（解决类型不匹配） ---
     MV_CC_PIXEL_CONVERT_PARAM stConvertParam;
     memset(&stConvertParam, 0, sizeof(MV_CC_PIXEL_CONVERT_PARAM));
 
@@ -95,39 +93,28 @@ bool myCamera::read(cv::Mat& image) {
     stConvertParam.nHeight = stFrameInfo_.nHeight;
     stConvertParam.pSrcData = stFrameOut.pBufAddr;
     stConvertParam.nSrcDataLen = stFrameInfo_.nFrameLen;
-    
-    // 关键修改：两次强制转换，先转int再转MvGvspPixelType，解决类型不匹配
     stConvertParam.enSrcPixelType = (MvGvspPixelType)(int)stFrameInfo_.enPixelType;
-    stConvertParam.enDstPixelType = (MvGvspPixelType)0x01000003; // MV_PIXEL_FORMAT_BGR888的原始整数值
-    
-    // 分配目标缓冲区
+    stConvertParam.enDstPixelType = (MvGvspPixelType)0x01000003; 
     unsigned int nDstBufSize = stFrameInfo_.nWidth * stFrameInfo_.nHeight * 3;
     if (pData_ == nullptr) {
         pData_ = new unsigned char[nDstBufSize];
     }
     stConvertParam.pDstBuffer = pData_;
     stConvertParam.nDstBufferSize = nDstBufSize;
-
-    // 调用转换函数
     nRet = MV_CC_ConvertPixelType(hDev_, &stConvertParam);
-    // --- 转换结束 ---
-
     if (nRet != MV_OK) {
-        spdlog::error("像素格式转换失败, 错误码: {}", nRet);
+        spdlog::error("像素格式转换失败", nRet);
         MV_CC_FreeImageBuffer(hDev_, &stFrameOut);
         return false;
     }
 
-    // 转换为OpenCV Mat
+    //转为cvmat
     image = cv::Mat(
         stFrameInfo_.nHeight,
         stFrameInfo_.nWidth,
         CV_8UC3,
         pData_
     ).clone();
-
-    // 释放原始缓冲区
     MV_CC_FreeImageBuffer(hDev_, &stFrameOut);
-
     return !image.empty();
 }
