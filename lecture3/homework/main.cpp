@@ -19,7 +19,7 @@ int main()
         tools::logger()->error("Failed to find camera devices!");
         return -1;
     }
-    
+
     //创建相机句柄
     ret = MV_CC_CreateHandle(&camera_handle, device_list.pDeviceInfo[0]);
     if (ret != MV_OK) {
@@ -44,7 +44,7 @@ int main()
     MV_CC_SetEnumValue(camera_handle, "BalanceWhiteAuto", MV_BALANCEWHITE_AUTO_CONTINUOUS);
     MV_CC_SetEnumValue(camera_handle, "ExposureAuto", MV_EXPOSURE_AUTO_MODE_OFF);
     MV_CC_SetEnumValue(camera_handle, "GainAuto", MV_GAIN_MODE_OFF);
-    MV_CC_SetFloatValue(camera_handle, "ExposureTime", 10000);
+    MV_CC_SetFloatValue(camera_handle, "ExposureTime", 5000);
     MV_CC_SetFloatValue(camera_handle, "Gain", 20);
     MV_CC_SetFrameRate(camera_handle, 60);
 
@@ -63,7 +63,7 @@ int main()
     tools::logger()->info("Camera initialized successfully.");
 
     //YOLO初始化
-    auto_aim::YOLO yolo("config/yolo_config.yaml");
+    auto_aim::YOLO yolo("/home/rm/Desktop/sp_vision_tutorial_26_jiuh/lecture3/homework/configs/yolo.yaml");
     tools::logger()->info("YOLO model initialized successfully.");
 
     //读取图像+装甲板
@@ -116,17 +116,79 @@ int main()
         auto armors = yolo.detect(img, frame_count);
         frame_count++;
 
-        //识别结果可视化
         cv::Mat display_img = img.clone();
         for (const auto& armor : armors) {
-            //闭合矩形
-            cv::polylines(display_img, armor.points, true, cv::Scalar(0, 0, 255), 2); 
+            // 1. 处理装甲板角点：Point2f（浮点）→ Point（整数），并检查有效性
+            std::vector<cv::Point> int_points;  // 用于存储转换后的整数型角点
+            bool points_valid = true;
 
-            //装甲板信息：颜色+代号
-            std::string info = fmt::format("{} {}", 
-                auto_aim::COLORS[armor.color], 
-                auto_aim::ARMOR_NAMES[armor.name]);
-            tools::draw_text(display_img, info, armor.center, cv::Scalar(0, 0, 255), 0.8, 2);
+            // 1.1 检查角点集是否为空
+            if (armor.points.empty()) {
+                tools::logger()->warn("Frame {}: Armor points is empty, skip drawing.", frame_count);
+                points_valid = false;
+            }
+            // 1.2 检查角点数量是否为4（装甲板是四边形，必须4个角点）
+            else if (armor.points.size() != 4) {
+                tools::logger()->warn("Frame {}: Armor points count is {}, need 4, skip drawing.", 
+                                     frame_count, armor.points.size());
+                points_valid = false;
+            }
+            // 1.3 转换浮点角点→整数角点，并检查坐标是否在图像范围内
+            else {
+                for (const auto& float_p : armor.points) {
+                    // 检查坐标是否超出图像边界（避免无效坐标导致绘图错误）
+                    if (float_p.x < 0 || float_p.x >= display_img.cols || 
+                        float_p.y < 0 || float_p.y >= display_img.rows) {
+                        tools::logger()->warn("Frame {}: Invalid point ({:.1f}, {:.1f}) (out of image bounds), skip drawing.", 
+                                             frame_count, float_p.x, float_p.y);
+                        points_valid = false;
+                        int_points.clear();  // 清空无效的点集
+                        break;
+                    }
+                    // 用cvRound()四舍五入转换（比直接截断更精准，避免坐标偏移）
+                    int_points.emplace_back(cvRound(float_p.x), cvRound(float_p.y));
+                }
+            }
+
+            // 2. 绘制装甲板矩形（仅当角点有效时执行）
+            if (points_valid) {
+                cv::polylines(display_img, int_points, true, cv::Scalar(0, 0, 255), 2); 
+            }
+            // 角点无效则跳过当前装甲板的后续绘制
+            else {
+                continue;
+            }
+
+            // 3. 绘制装甲板信息（颜色+代号），先检查索引是否合法（避免数组越界崩溃）
+            bool info_valid = true;
+            std::string armor_color_str, armor_name_str;
+
+            // 3.1 检查color索引是否在COLORS范围内（避免越界访问）
+            if (armor.color < 0 || armor.color >= static_cast<int>(auto_aim::COLORS.size())) {
+                tools::logger()->warn("Frame {}: Invalid armor color ({}) (out of COLORS range), skip text drawing.", 
+                                     frame_count, armor.color);
+                info_valid = false;
+            }
+            else {
+                armor_color_str = auto_aim::COLORS[armor.color];
+            }
+
+            // 3.2 检查name索引是否在ARMOR_NAMES范围内（避免越界访问）
+            if (armor.name < 0 || armor.name >= static_cast<int>(auto_aim::ARMOR_NAMES.size())) {
+                tools::logger()->warn("Frame {}: Invalid armor name ({}) (out of ARMOR_NAMES range), skip text drawing.", 
+                                     frame_count, armor.name);
+                info_valid = false;
+            }
+            else {
+                armor_name_str = auto_aim::ARMOR_NAMES[armor.name];
+            }
+
+            // 3.3 仅当信息合法时，绘制文本
+            if (info_valid) {
+                std::string info = fmt::format("{} {}", armor_color_str, armor_name_str);
+                // 注意：armor.center是Point2f，若tools::draw_text要求Point，需同样转换（此处假设支持Point2f，若报错可加cvRound）
+                tools::draw_text(display_img, info, armor.center, cv::Scalar(0, 0, 255), 0.8, 2);
+            }
         }
         cv::resize(display_img, display_img, cv::Size(640, 480));
         cv::imshow("Armor Detection", display_img);
