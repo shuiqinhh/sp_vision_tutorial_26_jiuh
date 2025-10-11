@@ -1,0 +1,13 @@
+/home/rm/Desktop/sp_vision_tutorial_26_jiuh/lecture4/homework/build/CMakeFiles/main.dir
+/home/rm/Desktop/sp_vision_tutorial_26_jiuh/lecture4/homework/build/CMakeFiles/video.dir
+/home/rm/Desktop/sp_vision_tutorial_26_jiuh/lecture4/homework/build/CMakeFiles/edit_cache.dir
+/home/rm/Desktop/sp_vision_tutorial_26_jiuh/lecture4/homework/build/CMakeFiles/rebuild_cache.dir
+/home/rm/Desktop/sp_vision_tutorial_26_jiuh/lecture4/homework/build/io/CMakeFiles/io.dir
+/home/rm/Desktop/sp_vision_tutorial_26_jiuh/lecture4/homework/build/io/CMakeFiles/edit_cache.dir
+/home/rm/Desktop/sp_vision_tutorial_26_jiuh/lecture4/homework/build/io/CMakeFiles/rebuild_cache.dir
+/home/rm/Desktop/sp_vision_tutorial_26_jiuh/lecture4/homework/build/tasks/CMakeFiles/auto_buff.dir
+/home/rm/Desktop/sp_vision_tutorial_26_jiuh/lecture4/homework/build/tasks/CMakeFiles/edit_cache.dir
+/home/rm/Desktop/sp_vision_tutorial_26_jiuh/lecture4/homework/build/tasks/CMakeFiles/rebuild_cache.dir
+/home/rm/Desktop/sp_vision_tutorial_26_jiuh/lecture4/homework/build/tools/CMakeFiles/tools.dir
+/home/rm/Desktop/sp_vision_tutorial_26_jiuh/lecture4/homework/build/tools/CMakeFiles/edit_cache.dir
+/home/rm/Desktop/sp_vision_tutorial_26_jiuh/lecture4/homework/build/tools/CMakeFiles/rebuild_cache.dir
